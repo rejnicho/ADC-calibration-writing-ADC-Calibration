@@ -18,6 +18,7 @@ This method provides robust results using two different types of runs from two d
 Together this demonstrates the stability of the ADCs through time for every amplifier's ADC, and yields the ability for the calibration to be extracted for future work.
 
 \section{Motivations}
+\label{sec: Motivations}
 \indent
 
  
@@ -37,9 +38,11 @@ We then wrap up the discussion with a demonstrative example of how to use the re
     \centering
     \includegraphics[width=0.5\linewidth]{dnlinlex.pdf}
     \caption{Above is a schematic demonstrating how the analog to digital converter ideally works (blue), and its true behavior (orange). Along the y axis is the ADU value recorded by the ADC, which has integer values. Along the x axis is the edge of the ADC, or the left and right edges of the bin which maps to a given ADU. As tracked along the blue curve, an ideal ADC has bins with integer edges which map to corresponding ADU. Typically the incident input is some amplified voltage, where the gain of such amplification is known. The orange curve shows a simulated true ADC, which has left and right edges that deviate from the ideal, but still maps to a single ADU. The difference in the left and right edges leads to the presence of a differential nonlinearity, a difference between an ideal bin width and a true bin width, and also an integral nonlinearity, a difference between an ideal middle of a bin, and a true middle of a bin.}
+    \label{fig:idealADC}
 \end{figure}
 
 \subsection{Definition of Differential and Integral Nonlinearity}
+\label{sec: DNL_INL_Def}
 \indent 
 
 
@@ -48,10 +51,10 @@ The output signal is measured in analog to digital units (ADU).
 The input signal has limits, called edges, which maps input voltage range into the stated ADU value. 
 These edges have a lower bound, called the left edge, and an upper bound, called the right edge.
 The difference between the right edge and the left edge determines the width of the bin itself, and is determined through the process called calibration of the ADC. 
-As seen in figure 1, in a perfect ADC (blue) the bins have a width of exactly 1 ADU, and are spaced integers apart from one another. 
+As seen in figure \ref{fig:idealADC}, in a perfect ADC (blue) the bins have a width of exactly 1 ADU, and are spaced integers apart from one another. 
 That is a voltage 0-0.9 would be 0 ADU, 1.0-1.9 is 1 ADU, and so on. 
 Yet in a true ADC (orange), bins may differ from the ideal bin width of 1 ADU, and have non integer left and right edges mapping to specific ADU values. 
-As shown in figure 1, voltage 0-1.2 would be 0 ADU, 1.3-1.8 1 ADU, and so on. 
+As shown in figure \ref{fig:idealADC}, voltage 0-1.2 would be 0 ADU, 1.3-1.8 1 ADU, and so on. 
 \indent 
 
 
@@ -59,6 +62,7 @@ The presence of deviations from an ideal ADC in terms of bin widths leads to two
 DNL is the deviation of a bin's width from that of an ideal bin width and is defined exactly as
 \begin{equation}
 DNL =1- w  
+\label{eq: DNL}
 \end{equation}
 where w is the width of a bin. 
 This value is computed for all bins along the ADC. 
@@ -70,6 +74,7 @@ To the accuracy of the ADCs used for the LSSTCamera, no missing codes are stated
 Integral nonlinearity is the deviation of the middle of a bin from that of an ideal bin, which is denoted 
 \begin{equation}
 INL = m_{ideal} - m_{adc} 
+\label{eq: INL}
 \end{equation}
 where $m_{ideal}$ is the midpoint of an ideal bin, and $m_{adc}$ is the midpoint of an ADC bin. 
 INL typically yields contributions from each bin on the order of $\pm$ 1, with deviations above 2 being out of specification (AD7982, 2020). 
@@ -84,6 +89,7 @@ We will examine any structure that is present through our calibration, especiall
 
 
 \subsection{Runs, Distributions, and Filters}
+\label{sec: RDF}
 \indent
 
 Calibration of the ADC involves using signal from the CCD over its range, from bias through saturation, which is mapped to roughly 100k ADU. 
@@ -98,34 +104,37 @@ When compiled into a single histogram, in counts per ADU, we can look at the dis
     \centering
     \includegraphics[width=0.5\linewidth]{bar1.pdf}
     \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144. The distribution demonstrates there is a much greater density of exposures in the sub 30,000 ADU region, yielding a distribution with counts more than two orders of magnitude greater than later regions of the ADC. Another feature is the present spike around 50,000 ADU, which is also due to a higher density of exposures with corresponding exposure time in that region. A third notable feature, is the oscillatory peak-like behavior throughout the range of the ADC. This is due to the exposures themselves having a bell curve distribution of ADU and is the result of adding many such exposures together. The upper right hand corner zooms in on one such peak, showing that bin to bin there are small deviations of counts present as well as some patterned downticks every 128 counts, as discussed further in Section 3.}
+    \label{fig:unscaled13144}
 \end{figure}
 
-Figure 2 demonstrates one such combined distribution, which yields fluctuations over the range of the ADC in terms of how much signal is present bin to bin. 
+Figure \ref{fig:unscaled13144} demonstrates one such combined distribution, which yields fluctuations over the range of the ADC in terms of how much signal is present bin to bin. 
 The bin to bin deviations are two fold. 
 The most present is the skew of the signal to low ADU which is the result of more low exposures time images in this run which is due to the intended purpose of this run. 
 There are also local deviations which denote the presence of DNL. 
 In order to understand how we would expect an ideal ADC to work, we want to preserve the long range behaviors of the full distribution, while minimizing any bin to bin deviations. 
 This is accomplished by using a filter, in this case a Savitizy-Golay filter.
 Additional filter choices are also examined in the appendix. 
-As seen in figure 3, over the range of the ADC the filter smooths between the bin to bin, while preserving the behavior over the long range. 
-In the method outlined in section 2, the resulting distribution from the filter is taken to model the distribution if the ADC behaved ideally. 
+As seen in figure \ref{fig:filterunscaled13144}, over the range of the ADC the filter smooths between the bin to bin, while preserving the behavior over the long range. 
+In the method outlined in section \ref{sec: Cummulative binning}, the resulting distribution from the filter is taken to model the distribution if the ADC behaved ideally. 
 We seek to characterize the resulting DNL and then place the ADC edges to be able to understand the incident signal to the CCDs. 
 
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{bar2.pdf}
     \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144 as seen in figure 2. Overlayed in orange is the output from a Savitzky-Golay filter with window size 65, and order 3. As seen more clearly in the zoomed upper righthand corner, there are deviations between the filter and the histogram throughout the range of the ADC which directly demonstrates presence of differential nonlinearity. One can also see from this that the filter follows the long range behavior of the ADC, while still smoothing over bin to bin deviations present in the histogram itself.}
+    \label{fig:filterunscaled13144}
 \end{figure}
 
 \subsection{Run Preparation}
+\label{sec: Preparation}
 \indent
 
 
-As discussed in section 1.2, the ADC covers a range of 100,000 bins, with some expected distribution of signal to fall into each of these bins. 
+As discussed in section \ref{sec: RDF}, the ADC covers a range of 100,000 bins, with some expected distribution of signal to fall into each of these bins. 
 In a more specific treatment this distribution, called the probability distribution function, informs how much is present in each of the bins.
 That is how many pixels on the amplifier will yield a specific ADU value.
 We have no a-priori knowledge of this distribution and instead need to infer it from the signal from the ADC.
-As determined using the calibration method in section 2, the shape of the distribution over the range of the ADC plays a large role in the parameters such as the DNL and INL.
+As determined using the calibration method in section \ref{sec: Cummulative binning}, the shape of the distribution over the range of the ADC plays a large role in the parameters such as the DNL and INL.
 Thus utilizing a distribution where there is a large amount of exposures in a single region and few in another, creates small bins (on average) with large DNL and an unstable (bin starting dependent) INL. 
 In order to calibrate the ADC successfully then, we need a distribution where all portions of the ADC are equally represented, otherwise we are introducing features and substructure of the ADC that simply do not exist
 We will term this requirement for the distribution "relative flatness". 
@@ -135,10 +144,10 @@ We will term this requirement for the distribution "relative flatness".
 This implies that we have two criteria for calibration, relative flatness and the full range of the ADC. 
 Yet our data come in the form of exposures from EO Runs, and signal in the ADC is proportional to the amount of light incident on the sensor. 
 This implies many exposures, with many different amounts of light is necessary to cover the full range of the ADC. 
-Although, as seen from figure 2, using all exposures equally in a run may yield a distribution where some regions are over or under represented. 
+Although, as seen from figure \ref{fig:unscaled13144}, using all exposures equally in a run may yield a distribution where some regions are over or under represented. 
 Therefore we need to determine the groupings of exposures that demonstrate the distribution of signal over the entire ADC. 
 A run of images with increasing exposure time and continuous readout would satisfy this requirement, as we could see how the ADC responds over the full range of the CCDs. 
-This was completed during Run 6b of EO Testing as run 13549 which we call a "ramp" run and is shown in figure 5.
+This was completed during Run 6b of EO Testing as run 13549 which we call a "ramp" run and is shown in figure \ref{fig:filter13549}.
 While this data is very useful for this calibration it is not always practical to request a special run set of exposures given the time necessary for the run.
 Instead it is beneficial to be able to also use flat pair runs, such as run 13144, which still record exposures from bias to saturation of the ADC but in a nonuniform way.
 To utilize these runs we use a dynamic pre-scale to select portions of all exposures to include in the combined pseudo-flat distribution. 
@@ -147,6 +156,7 @@ To utilize these runs we use a dynamic pre-scale to select portions of all expos
     \centering
     \includegraphics[width=0.5\linewidth]{bar13549.pdf}
     \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 234 ramp exposures taken in electro-optical testing run 13549. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. Over the range of the ADC, the signal in all bins remains relatively consistent. Yet near the saturation there is a large peak in the distribution which is discussed in detail in section 2.3. In the upper lefthand portion of the plot is a zoomed in section of the ADC demonstrating the oscillatory nature of the distribution as well as the deviations between the filter and the distribution, a sign of the DNL present in the ADC.}
+    \label{fig:filter13549}
 \end{figure}
 
 
@@ -156,6 +166,7 @@ For run 13144 we used 5000 counts per ADU.
  We then compute a pre-scale factor, $\chi _i$, for each 25 ADU subregion of the ADC, where
 \begin{equation}
 \chi_i = \frac{5000}{c_{av}}
+\label{eq: prescale}
 \end{equation}
 where $c_{av}$ is the average observed counts from the combined histogram over the subregion. 
 For any regions of the ADC where the $c_{av} < 5000$ the pre-scale factor was taken to be 1, or all data in that region was used for the combined distribution. 
@@ -163,27 +174,30 @@ For any regions of the ADC where the $c_{av} < 5000$ the pre-scale factor was ta
 
 
 Each exposure is then pulled and its peak signal in ADU is matched with the corresponding pre-scale factor. 
-Then the number of pixels to select from that exposure, denoted as $\eta $, is determined via
+Then the number of samples to select from that exposure, denoted as $\eta $, is determined via
  \begin{equation}
  \eta = \chi_i *n 
+ \label{eq:selectedsamples}
 \end{equation}
 Where the number of pixels in the amplifier, n, is dependent on the type of CCD attached to that ADC, either an E2V or ITL from the two manufacturers of the CCDs. 
 A randomization process selects $\eta$ pixel digitizations from the exposure, and these are added to the combined distribution. 
 This is repeated for each exposure in the run, and builds a pseudo-flat distribution over the full range of the ADC while keeping the behavior in each exposure. 
-The resulting distribution is shown in figure 5. 
+The resulting distribution is shown in figure \ref{fig:scaled13144}. 
 
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{bar13144.pdf}
     \caption{Above is the pre-scaled combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in electro-optical testing run 13144, the unscaled version is Figure 3. The pre-scaling process is outlined in section 2.1. Oscillations can be seen throughout the histogram, which are the result of the exposures used to create this combined distribution. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. The deviations between the filter and the histogram directly demonstrates persistence of differential nonlinearity in the ADC still present despite the rescaling.}
+    \label{fig:scaled13144}
 \end{figure}
 
 \section{Cumulative Binning Calibration}
+\label{sec: Cummulative binning}
 \indent
 
 
 After examining the previous method of calibrating the ADC, detailed in the appendix, a need existed for a calibration of the ADC that represents the ADC without inputting fabricated INL or DNL. 
-In this new calibration method we will still use entire runs, but selectively prepare the distribution of counts over the range of the ADC as detailed in section 1.3. 
+In this new calibration method we will still use entire runs, but selectively prepare the distribution of counts over the range of the ADC as detailed in section \ref{sec: Preparation}. 
 The formal definition of the filter is expanded to include a probability distribution function (pdf) to illustrate the distribution of counts along the ADC. 
 We will then use all this to construct the bin edges along the full range of the ADC. 
 Embedded is also discussion of removal of particular bins, protection of the distribution from the filter, and other aspects crucial to calibration, as well as discussion of where to find a version of code used in this work.
@@ -191,6 +205,7 @@ Embedded is also discussion of removal of particular bins, protection of the dis
 
 
 \subsection{PDF definition and determination of ADC edges} 	
+\label{sec:PDFEdges}
 \indent
 
 Here we develop a new calibration process using the understanding of $\varrho$, the probability distribution function (PDF) in relation to our signal in ADU as mentioned in section 1.3. 
@@ -277,17 +292,17 @@ In the case of figure 5, with a peak near the saturation, this meant the edge me
 To access a version of the code which produced these results, use the GitHub repository rejnicho/
 Focal-Plane-DNL-adc-Calibration, and follow the three step process to access the data, calibrate the ADCs, and create the comparison plots shown in section 3. 
 
-\section{Conclusion}
+\section{Results}
 \indent
 
 
 Utilizing the calibration process of the ADC as described in section 2, we are able to calibrate all 3024 non-corner ADCs on the LSSTCam focal plane using both runs 13144 and 13549. 
-For each individual amplifier’s ADC we can see the substructure of the ADC, figure 6, by looking at the individual bins and their widths as a function of their location along the ADC. 
+For each individual amplifier’s ADC we can see the substructure of the ADC, figure \ref{fig:substructureplot}, by looking at the individual bins and their widths as a function of their location along the ADC. 
 We can see the presence of any structure in the distribution itself, including the downticks present every 128 counts along the ADC. 
 The downticks present in this amplifier are not observed in all amplifiers, although the substructure in the form of macroscopic groupings of the DNL can be seen in all amplifiers.
 This suggests that the real behavior of the ADC is recovered through the method developed in section 2, and is present regardless of the type of data used in the calibration.
-Even though as figure 7 demonstrates, the calibrating distribution plays a role in the exact locations of the bin widths over the ADC, there is no statistical evidence via a Paired T Test that the width difference deviates from zero between the two runs.  
-Also seen in figure 7, there are some noticeable differences in the locations of the edges of the ADCs when depending on whether run 13144 or 13549 was used for the calibration.
+Even though as figure \ref{fig:substructureplot} demonstrates, the calibrating distribution plays a role in the exact locations of the bin widths over the ADC, there is no statistical evidence via a Paired T Test that the width difference deviates from zero between the two runs.  
+Also seen in figure \ref{fig:substructureplot}, there are some noticeable differences in the locations of the edges of the ADCs when depending on whether run 13144 or 13549 was used for the calibration.
 We examine the locations of the left edge in more detail, and determined that R22S00C01 has left edges that differ on average by 0.2 ADU per bin. 
 This suggests there is a systematic shift of the left edges depending upon the distribution used in the calibration.
 Given there is no difference in the widths between the two runs nor any systemic differences in INL and DNL, this suggests that there is a slight offset of the binning depending on the calibrating run.
@@ -297,13 +312,14 @@ This means the widths created by both runs yields consistent calibrations of the
     \centering
     \includegraphics[width=0.5\linewidth]{substructure.pdf}
     \caption{The above figure demonstrates the calibrated bin widths of the the amplifier R22S00C01, near the lowest ADU region. At this zoom level, the substructure of the ADC can be seen clearly. On the left is the result from the ramp run 13549, and on the left is the result from the pre-scaled run 13144.  Some slight deviations can be seen between the two runs, due to their individual distributions, but both demonstrate regions of macroscopic grouping of DNL and yield similar bin for bin values of the DNL, as explained in section 3.}
+    \label{fig:substructureplot}
 \end{figure}
 
 Beyond a single amplifier, we can further look at the entire focal plane, and the edges made for each of the ADCs. 
 For the sake of space, we show just the calibration of 13549 over the entire focal plane. 
-Figure 8 demonstrates the absolute value maximum DNL for all bins for every ADC on the focal plane. 
+Figure \ref{fig:focalplaneDNL} demonstrates the absolute value maximum DNL for all bins for every ADC on the focal plane. 
 The DNL falls within the allowable 0.85-1.5 range as set by the manufacturer.  
-Figure 9 demonstrates the absolute value maximum INL for all bins for every ADC on the focal plane. 
+Figure \ref{fig:focalplaneINL} demonstrates the absolute value maximum INL for all bins for every ADC on the focal plane. 
 The INL falls within $\pm$ 2 for every ADC. 
 This suggests we have all the ADCs within the specifications set by the manufacturer, and the same result was noted for 13144 although plots are not included. 
 
@@ -311,12 +327,15 @@ This suggests we have all the ADCs within the specifications set by the manufact
     \centering
     \includegraphics[width=0.5\linewidth]{maxdnlplot.pdf}
     \caption{The above figure demonstrates the calibration of the ADC using the differential nonlinearity method we described in section 2.2. This method computes edges along the ADC for each 3024 amplifiers individually. The DNL can then be computed for each bin, in each amplifier, and plotted here is the maximum magnitude DNL of all bins in each amplifier. Ranging in magnitude between 0 and 1, the maximally achieved DNL for each amplifier is below the maximally allowed by the specification sheet. }
+    \label{fig:focalplaneDNL}
+
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{13549maxinl.pdf}
     \caption{The above figure demonstrates the calibration of the ADC using the differential nonlinearity method we described in section 2.2. This method computes edges along the ADC for each 3024 amplifiers individually. The INL can then be computed for each bin, in each amplifier, and plotted here is the maximum magnitude INL of all bins in each amplifier. Ranging between 0 and 2, the maximally achieved INL for each amplifier is below the maximally allowed by the specification sheet.}
+    \label{fig:focalplaneINL}
 \end{figure}
 
 
