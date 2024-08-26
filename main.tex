@@ -103,7 +103,7 @@ When compiled into a single histogram, in counts per ADU, we can look at the dis
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{bar1.pdf}
-    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144. The distribution demonstrates there is a much greater density of exposures in the sub 30,000 ADU region, yielding a distribution with counts more than two orders of magnitude greater than later regions of the ADC. Another feature is the present spike around 50,000 ADU, which is also due to a higher density of exposures with corresponding exposure time in that region. A third notable feature, is the oscillatory peak-like behavior throughout the range of the ADC. This is due to the exposures themselves having a bell curve distribution of ADU and is the result of adding many such exposures together. The upper right hand corner zooms in on one such peak, showing that bin to bin there are small deviations of counts present as well as some patterned downticks every 128 counts, as discussed further in Section 3.}
+    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144. The distribution demonstrates there is a much greater density of exposures in the sub 30,000 ADU region, yielding a distribution with counts more than two orders of magnitude greater than later regions of the ADC. Another feature is the present spike around 50,000 ADU, which is also due to a higher density of exposures with corresponding exposure time in that region. A third notable feature, is the oscillatory peak-like behavior throughout the range of the ADC. This is due to the exposures themselves having a bell curve distribution of ADU and is the result of adding many such exposures together. The upper right hand corner zooms in on one such peak, showing that bin to bin there are small deviations of counts present as well as some patterned downticks every 128 counts, as discussed further in Section \ref{sec:results}.}
     \label{fig:unscaled13144}
 \end{figure}
 
@@ -121,7 +121,7 @@ We seek to characterize the resulting DNL and then place the ADC edges to be abl
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{bar2.pdf}
-    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144 as seen in figure 2. Overlayed in orange is the output from a Savitzky-Golay filter with window size 65, and order 3. As seen more clearly in the zoomed upper righthand corner, there are deviations between the filter and the histogram throughout the range of the ADC which directly demonstrates presence of differential nonlinearity. One can also see from this that the filter follows the long range behavior of the ADC, while still smoothing over bin to bin deviations present in the histogram itself.}
+    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144 as seen in figure \ref{fig:filterunscaled13144}. Overlayed in orange is the output from a Savitzky-Golay filter with window size 65, and order 3. As seen more clearly in the zoomed upper righthand corner, there are deviations between the filter and the histogram throughout the range of the ADC which directly demonstrates presence of differential nonlinearity. One can also see from this that the filter follows the long range behavior of the ADC, while still smoothing over bin to bin deviations present in the histogram itself.}
     \label{fig:filterunscaled13144}
 \end{figure}
 
@@ -155,7 +155,7 @@ To utilize these runs we use a dynamic pre-scale to select portions of all expos
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{bar13549.pdf}
-    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 234 ramp exposures taken in electro-optical testing run 13549. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. Over the range of the ADC, the signal in all bins remains relatively consistent. Yet near the saturation there is a large peak in the distribution which is discussed in detail in section 2.3. In the upper lefthand portion of the plot is a zoomed in section of the ADC demonstrating the oscillatory nature of the distribution as well as the deviations between the filter and the distribution, a sign of the DNL present in the ADC.}
+    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 234 ramp exposures taken in electro-optical testing run 13549. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. Over the range of the ADC, the signal in all bins remains relatively consistent. Yet near the saturation there is a large peak in the distribution which is discussed in detail in section \ref{sec: Cummulative binning}. In the upper lefthand portion of the plot is a zoomed in section of the ADC demonstrating the oscillatory nature of the distribution as well as the deviations between the filter and the distribution, a sign of the DNL present in the ADC.}
     \label{fig:filter13549}
 \end{figure}
 
@@ -187,7 +187,7 @@ The resulting distribution is shown in figure \ref{fig:scaled13144}.
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{bar13144.pdf}
-    \caption{Above is the pre-scaled combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in electro-optical testing run 13144, the unscaled version is Figure 3. The pre-scaling process is outlined in section 2.1. Oscillations can be seen throughout the histogram, which are the result of the exposures used to create this combined distribution. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. The deviations between the filter and the histogram directly demonstrates persistence of differential nonlinearity in the ADC still present despite the rescaling.}
+    \caption{Above is the pre-scaled combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in electro-optical testing run 13144, the unscaled version is Figure 3. The pre-scaling process is outlined in section \ref{sec:PDFEdges}. Oscillations can be seen throughout the histogram, which are the result of the exposures used to create this combined distribution. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. The deviations between the filter and the histogram directly demonstrates persistence of differential nonlinearity in the ADC still present despite the rescaling.}
     \label{fig:scaled13144}
 \end{figure}
 
@@ -212,11 +212,13 @@ Here we develop a new calibration process using the understanding of $\varrho$, 
 Each bin of the ADC will have counts which are the integral of the pdf, from the left edge of the bin to the right edge of the bin described as
  \begin{equation}
 c_o =  \int_{l}^{r} \varrho dx
+\label{eq:pdfcounts}
 \end{equation}
 where l is the left edge of the ADC, r is the right edge. 
 There is also a relationship between the filtered distribution values and the PDF,
  \begin{equation}
 f_i =  \int_{i}^{i+1} \varrho dx
+\label{eq:pdffilter}
 \end{equation}
 where $f_{i}$ is a filtered output per $ADU_{i}$. 
 The filtered value is equivalent to the integral of the pdf from the integer left to right edges of the pdf over a region of width 1. 
@@ -225,18 +227,21 @@ Further filter choices can be found in the appendix.
 Using this description of the filter, we can utilize the fundamental theorem of calculus via cumulative sums, to examine how an integral of the pdf behaves over larger regions of the ADC. 
  \begin{equation}
 \sum_{i=0}^{j} f_i= \int_{0}^{j+1} \varrho dx
+\label{eq:fidef}
 \end{equation}
-Since our ultimate goal is to determine the edges of the ADC, r and l in equation 5, we need to interpolate non-integer values of these integrals. 
+Since our ultimate goal is to determine the edges of the ADC, r and l in equation \ref{eq:pdfcounts}, we need to interpolate non-integer values of these integrals. 
 This is done by fitting a cubic spline, $ \zeta$, to the cumulative sum, which allows us to evaluate the integral of the PDF with non integer end points, representing the true edges of the ADCs. 
 Mathematically, we decompose the integral of the observed distribution to be:
  \begin{equation}
 c_o = \zeta(r) - \zeta(l)
+\label{eq:countsspline}
 \end{equation}
-Rearranging eq. 8: 
+Rearranging eq. \ref{eq:countsspline}: 
  \begin{equation}
 c_o + \zeta(l) = \zeta(r)
+\label{eq:splineright}
 \end{equation}
-Given the choice of using the first left edge to be our earliest populated bin and $c_{o}$ is described in section 1.2, we then utilize equation 9 to determine the right edge.
+Given the choice of using the first left edge to be our earliest populated bin and $c_{o}$ is described in section \ref{sec: RDF}, we then utilize equation \ref{eq:splineright} to determine the right edge.
 In our method, we first assume a width of 1 and determine how close the value matches that of expected. Then if the right edge is too small/large we increase/decrease the bin size by a standard amount and recheck the value. 
 This process is repeated until a convergence interval is reached, typically $\pm$1 count. 
 See the appendix for further information about the convergence criteria. 
@@ -244,13 +249,14 @@ Altogether this yields a calibration of a single amplifier's ADC in under 10 sec
 
 
 \subsection{Additional Considerations} 
+\label{sec: AD}
 \indent 
 
 
 Through developing this calibration, some issues arose which required attention in order for the calibration to not fail. 
 We detail a number of these in this section, which may allow for reconstruction of this method. 
 \indent 
-The first of which involves the implementation of the spline of the cumulative sum as described in Section 2.1. 
+The first of which involves the implementation of the spline of the cumulative sum as described in Section \ref{sec:PDFEdges}. 
 The spline utilized in this method is a cubic function. 
 Due to this, it has the potential to interpolate and yield a negative values, specifically it was noted that this occurred at the low ADU region of the distribution. 
 We note that negative values from the spline are nonphysical solutions, as a region of the ADC can only yield 0 or a positive number of counts. 
@@ -260,7 +266,7 @@ This inherently protects the spline from yielding negative values, as the functi
 
 A second consideration is the depth of bins to include in the entire distribution. 
 We caution against including, in our use case, bins of low ADU which are sparsely populated as they may represent Poisson noise rather than true signal. 
-In our calibration, we remove any bin with less than 100 counts, which are bins with signals that are 1/50 of a typical bin (as seen also in the prescale preparations in section 1.3.) 
+In our calibration, we remove any bin with less than 100 counts, which are bins with signals that are 1/50 of a typical bin (as seen also in the prescale preparations in section \ref{sec: Preparation}). 
 This protects the calibration from exceptionally small bins due to noise.
 \indent
 
@@ -283,24 +289,26 @@ This was troubling to observe, as the distributions in most amplifiers did not h
 It became essential to terminate the distributions with these peaks to exclude them from the edge calibration, due to known INL/DNL injection from peaked sources as discussed in the appendix. 
 Termination excluded all bins within a range of 50 of the peak, effectively about 100 bins were removed per observed peak. 
 This is less than 1 percent of the data and prevents synthetic INL and DNL injection, while still allowing calibration for the majority of the ADC. 
-In the case of figure 5, with a peak near the saturation, this meant the edge method stops before reaching where the saturation is achieved, and instead makes edges over the region in the main part of the distribution. 
+In the case of figure \ref{fig:filter13549}, with a peak near the saturation, this meant the edge method stops before reaching where the saturation is achieved, and instead makes edges over the region in the main part of the distribution. 
 
 \subsection{GitHub Access}
+\label{sec: Git}
 \indent 
 
 
 To access a version of the code which produced these results, use the GitHub repository rejnicho/
-Focal-Plane-DNL-adc-Calibration, and follow the three step process to access the data, calibrate the ADCs, and create the comparison plots shown in section 3. 
+Focal-Plane-DNL-adc-Calibration, and follow the three step process to access the data, calibrate the ADCs, and create the comparison plots shown in section \ref{sec:results}. 
 
 \section{Results}
+\label{sec:results}
 \indent
 
 
-Utilizing the calibration process of the ADC as described in section 2, we are able to calibrate all 3024 non-corner ADCs on the LSSTCam focal plane using both runs 13144 and 13549. 
+Utilizing the calibration process of the ADC as described in section \ref{sec: Cummulative binning}, we are able to calibrate all 3024 non-corner ADCs on the LSSTCam focal plane using both runs 13144 and 13549. 
 For each individual amplifier’s ADC we can see the substructure of the ADC, figure \ref{fig:substructureplot}, by looking at the individual bins and their widths as a function of their location along the ADC. 
 We can see the presence of any structure in the distribution itself, including the downticks present every 128 counts along the ADC. 
 The downticks present in this amplifier are not observed in all amplifiers, although the substructure in the form of macroscopic groupings of the DNL can be seen in all amplifiers.
-This suggests that the real behavior of the ADC is recovered through the method developed in section 2, and is present regardless of the type of data used in the calibration.
+This suggests that the real behavior of the ADC is recovered through the method developed in section \ref{sec: Cummulative binning}, and is present regardless of the type of data used in the calibration.
 Even though as figure \ref{fig:substructureplot} demonstrates, the calibrating distribution plays a role in the exact locations of the bin widths over the ADC, there is no statistical evidence via a Paired T Test that the width difference deviates from zero between the two runs.  
 Also seen in figure \ref{fig:substructureplot}, there are some noticeable differences in the locations of the edges of the ADCs when depending on whether run 13144 or 13549 was used for the calibration.
 We examine the locations of the left edge in more detail, and determined that R22S00C01 has left edges that differ on average by 0.2 ADU per bin. 
@@ -311,7 +319,7 @@ This means the widths created by both runs yields consistent calibrations of the
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{substructure.pdf}
-    \caption{The above figure demonstrates the calibrated bin widths of the the amplifier R22S00C01, near the lowest ADU region. At this zoom level, the substructure of the ADC can be seen clearly. On the left is the result from the ramp run 13549, and on the left is the result from the pre-scaled run 13144.  Some slight deviations can be seen between the two runs, due to their individual distributions, but both demonstrate regions of macroscopic grouping of DNL and yield similar bin for bin values of the DNL, as explained in section 3.}
+    \caption{The above figure demonstrates the calibrated bin widths of the the amplifier R22S00C01, near the lowest ADU region. At this zoom level, the substructure of the ADC can be seen clearly. On the left is the result from the ramp run 13549, and on the left is the result from the pre-scaled run 13144.  Some slight deviations can be seen between the two runs, due to their individual distributions, but both demonstrate regions of macroscopic grouping of DNL and yield similar bin for bin values of the DNL, as explained in section \ref{sec:results}.}
     \label{fig:substructureplot}
 \end{figure}
 
@@ -326,7 +334,7 @@ This suggests we have all the ADCs within the specifications set by the manufact
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{maxdnlplot.pdf}
-    \caption{The above figure demonstrates the calibration of the ADC using the differential nonlinearity method we described in section 2.2. This method computes edges along the ADC for each 3024 amplifiers individually. The DNL can then be computed for each bin, in each amplifier, and plotted here is the maximum magnitude DNL of all bins in each amplifier. Ranging in magnitude between 0 and 1, the maximally achieved DNL for each amplifier is below the maximally allowed by the specification sheet. }
+    \caption{The above figure demonstrates the calibration of the ADC using the differential nonlinearity method we described in section \ref{sec: AD}. This method computes edges along the ADC for each 3024 amplifiers individually. The DNL can then be computed for each bin, in each amplifier, and plotted here is the maximum magnitude DNL of all bins in each amplifier. Ranging in magnitude between 0 and 1, the maximally achieved DNL for each amplifier is below the maximally allowed by the specification sheet.}
     \label{fig:focalplaneDNL}
 
 \end{figure}
@@ -334,7 +342,7 @@ This suggests we have all the ADCs within the specifications set by the manufact
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{13549maxinl.pdf}
-    \caption{The above figure demonstrates the calibration of the ADC using the differential nonlinearity method we described in section 2.2. This method computes edges along the ADC for each 3024 amplifiers individually. The INL can then be computed for each bin, in each amplifier, and plotted here is the maximum magnitude INL of all bins in each amplifier. Ranging between 0 and 2, the maximally achieved INL for each amplifier is below the maximally allowed by the specification sheet.}
+    \caption{The above figure demonstrates the calibration of the ADC using the differential nonlinearity method we described in section \ref{sec: AD}. This method computes edges along the ADC for each 3024 amplifiers individually. The INL can then be computed for each bin, in each amplifier, and plotted here is the maximum magnitude INL of all bins in each amplifier. Ranging between 0 and 2, the maximally achieved INL for each amplifier is below the maximally allowed by the specification sheet.}
     \label{fig:focalplaneINL}
 \end{figure}
 
@@ -342,14 +350,15 @@ This suggests we have all the ADCs within the specifications set by the manufact
 
 \indent
 
-We note, although it is not explicitly shown, that the issues of instability of the DNL and INL, as discussed in section 1.4 and the appendix, are no longer present. 
+We note, although it is not explicitly shown, that the issues of instability of the DNL and INL, as discussed in and the appendix are no longer present. 
 This implies we are able to calibrate the ADC regardless of the commencing bin. 
 This suggests that using a pre-scale on a flat pairs run works just as well for this DNL calibration of the ADC as using a ramp run. 
 An additional aspect is noted in the stability of our electronics through time, meaning the ADCs are delivering consistent binning results from December of 2021 to November of 2023. 
 This is highly beneficial as the survey length of LSST is 10 years, and changing binning of the ADCs may prove troublesome. 
-As seen in section 4, this method allows the conversion of bin edges from integer to real values, allowing for greater precision in measurements used for many science cases. 
+As seen in section \ref{sec:Future}, this method allows the conversion of bin edges from integer to real values, allowing for greater precision in measurements used for many science cases. 
 
 \section{Future Work}
+\label{sec:Future}
 \indent
 
 The work presented in this document outlines the ability to calibrate each of the amplifiers's ADC individually on the LSSTCam focal plane. 
@@ -364,6 +373,7 @@ Given the calibration as developed in section 2 for a specific amplifier, a list
 That means for any measurement on that amplifier, the output ADU is simply:
  \begin{equation}
 ADU_{measurement} = ADU_{start} + index 
+\label{eq: ADU}
 \end{equation}
 Where $ADU_{measurement}$ is the measurement taken, and index is the integer amount from the start of the calibration the measurement is. 
 Therefore, to determine the true voltages of the ADC, one takes the index element of the list for the minimum voltage, and the index + 1 element of the list for the maximum voltage. 
@@ -378,12 +388,14 @@ I could then take either the left edge or the middle to be the true voltage of t
 In turn this allows this result to have direct impacts for science as a more precise number of electrons can be used and compared across amplifiers. 
 
 \section{References}
+\label{sec:Ref}
 
 Ivezic, et al., 2019, ApJ, 873, 111.
 
 18-Bit, 1 MSPS PulSAR ADC in MSOP/LFCSP. AD7982. 2020. 
 
 \section{Appendix}
+\label{sec:appendix}
 \indent
 
 In this section we detail more methods and processes attempted during the development of the calibration process discussed in this work. 
@@ -391,17 +403,19 @@ The work detailed here contributed greatly to the development of the cumulative 
 \indent
 
 \subsection{First Pass DNL ADC Calibration}
+\label{sec:Adrianmethod}
 \indent
 
 
-This section details a DNL informed ADC calibration which was developed by A. Shestakov, which is a starting point for the work described in section 2. 
-Using run 13144, as shown in figures 2 and 3, a Savitizy-Golay filter with a window of 65 and order 3 was used to model an ideal ADCs behavior. 
+This section details a DNL informed ADC calibration which was developed by A. Shestakov, which is a starting point for the work described in section \ref{sec: Cummulative binning}. 
+Using run 13144, as shown in figures \ref{fig:unscaled13144} and \ref{fig:filterunscaled13144}, a Savitizy-Golay filter with a window of 65 and order 3 was used to model an ideal ADCs behavior. 
 The DNL of each bin was then computed, using the reformualization of the DNL via 
  \begin{equation}
  DNL = \frac{c_e}{c_o}
+ \label{eq:dnlfrac}
  \end{equation}
 where the $c_{e}$ is the expected number of counts from the filter, and $c_{o}$ is the observed number of counts from the true distribution. 
-Equating equation 3 with equation 1 we yield an eqution for the widths along the ADC as
+Equating equation \ref{eq: DNL} with equation \ref{eq:dnlfrac} we yield an equation for the widths along the ADC as
  \begin{equation}
  w = 1-DNL = 1- \frac{c_e}{c_o}
  \end{equation}
@@ -414,12 +428,13 @@ This allowed the calibration of the ADC over a range of approximately 26-100k AD
 
 
 \subsection{Differential and Integral Nonlinearity Results}
+\label{sec:DNLINLIssues}
 \indent
 
 
-The original method, as discussed in the previous section 1.3, yields a calibrated ADC where both INL and DNL have deviations from specification. 
+The original method, as discussed in the previous section \ref{sec:Adrianmethod}, yields a calibrated ADC where both INL and DNL have deviations from specification. 
 Here we will break down the nonlinearities independently to parse where they come from in this calibration. 
-The left side of figure 4 demonstrates the DNL as computed using this method from earliest possible bin. 
+The left side of figure \ref{fig:originalDNLINL} demonstrates the DNL as computed using this method from earliest possible bin. 
 One can clearly see that for low ADU there are many large, greater than $|0.5|$ ADU DNLs, yet later on the DNL falls within a more expected range. 
 This translated into early bin widths being very narrow while later bins are much wider. 
 We break the reasoning for this phenomena into two parts. 
@@ -430,29 +445,30 @@ The appendix notes some chi square tests to examine how closely the distribution
 The second aspect is the signal difference in the two regions. 
 This signal is on the order of one million near bias and approximately five thousand near saturation, which is multiple orders of magnitude difference over the range of the ADC.
 Together this notes the parameters window size should be changed to match the incident distribution more closely but also a more flat distribution should be used where the density of ADU is more consistent over the ADC.
-We will see in section 2 that changing filter type and clever use of the combined distribution has this DNL issue resolved. 
+We will see in section \ref{sec: Cummulative binning} that changing filter type and clever use of the combined distribution has this DNL issue resolved. 
 \indent 
 
 
-There is also structure in the INL resulting from this method described in section 1.3.
-The right plot in figure 4 demonstrates unbounded INL over the range of the ADC, with a maximum deviation of over 140 ADU. 
+There is also structure in the INL resulting from this method described in section \ref{sec:Adrianmethod}.
+The right plot in figure \ref{fig:originalDNLINL} demonstrates unbounded INL over the range of the ADC, with a maximum deviation of over 140 ADU. 
 Clever cuts to the distributions successfully lowered INL contributions to 10 ADU, but reduced the range of the calibration significantly to cover a range of about 30,000 ADU. 
 This suggested that no amount of clever cuts would be able to coax both the INL and DNL into specifications. 
 Another notable dependence arose between the starting bin and the maximum magnitude INL contribution achieved over the calibration. 
 This is examined more closely in the appendix, but it is noted that a shift of 1 ADU in starting location could result in maximum INL change of over 100 ADU over the range of the calibration. 
-Together these issues with INL and DNL indicate the need for a more robust treatment of the calibration method, a successful attempt will be outlined in section 2.
+Together these issues with INL and DNL indicate the need for a more robust treatment of the calibration method, a successful attempt will be outlined in section \ref{sec: Cummulative binning}.
 
 
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{inldnl.pdf}
-    \caption{Above on the left demonstrates the contributions to the differential nonlinearity using the method described in section 1.1 for amplifier R22S00C01. For sub 30000 ADU, the DNL sharply peaks, suggesting reason for concern, while the DNL stabilizes for higher ADU. On the left is a plot of the unbounded integral nonlinearity that grows progressively throughout the range of the CCD first sharply for low ADU then more gradually for higher ADU.}
+    \caption{Above on the left demonstrates the contributions to the differential nonlinearity using the method described in \ref{sec:Adrianmethod} for amplifier R22S00C01. For sub 30000 ADU, the DNL sharply peaks, suggesting reason for concern, while the DNL stabilizes for higher ADU. On the left is a plot of the unbounded integral nonlinearity that grows progressively throughout the range of the CCD first sharply for low ADU then more gradually for higher ADU.}
+    \label{fig:originalDNLINL}
 \end{figure}
 
 \subsection{Additional Tested Calibration Methods}
-
+\label{sec:AdMethod}
 We comment further on motivating a flat distribution being necessary for calibration.
-Using a unscaled 13144 but the method described in section 2.2, cumulative binning, the ADC was calibrated depending on a starting bin.
+Using a unscaled 13144 but the method described in section \ref{sec: AD}, cumulative binning, the ADC was calibrated depending on a starting bin.
 This bin normally was taken to be the first ADU in the distribution from the run itself. 
 Yet, one would believe that the DNL and INL would be independent of the location of the starting bin as it should be characterizing the nature of the ADC.
 The analysis demonstrated this was not true of the INL, and rather the INL would behave very differently depending upon the choice of the first bin. 
@@ -462,7 +478,7 @@ We also examined the relative values of the filter and the distribution itself f
 This effect was entirely removed for run 13549, and minimized for later starting bin, where the distribution was evenly represented, suggesting the INL issue was a result from the skewed original distribution. 
  \indent 
  
-Extensive work was also done in order to choose the filter used in the cumulative sum binning method described in section 2.2. 
+Extensive work was also done in order to choose the filter used in the cumulative sum binning method described in section \ref{sec: AD}. 
 We examined multiple window sizes, between 25 and 100, and different orders of the filter, 2nd and 3rd for the Savitzky-Golay filter. 
 We also utilized another type of filter, Butterworth with high-pass, lowpass, and bandpass. 
 We utilized Chi-Squared tests in order to determine which filter best represented the input data and distributions, using both the real data used in this paper, but also fabricated datasets as well. 
@@ -482,13 +498,12 @@ These changes, coupled with 0.2 percent difference suggests the residuals were o
 
 
 Lastly there were various other attempts of calibration methods that were tried. 
-Some of these include terminating the dataset and doing a DNL mean correction in the original method in section 1.3. 
+Some of these include terminating the dataset and doing a DNL mean correction in the original method in section \ref{sec:Adrianmethod}. 
 These methods both failed due to the other issues discussed throughout this work. 
 Before creating the pre-scale method, we also tried adding a correction to the filtered output in order to more closely match the distribution. 
 This proved to not fix the INL or the DNL problem, and diminished much of the filter's predictive power of acting as a true ADC distribution.
 The last method we tried involved PDF as used in the cumulative cum binning method, but it did not utilize the cumulative sum. 
 Rather it fit a spline to each of the filtered datapoints, which mathematically would require to deconvolve the PDF in order to recover the edges. 
 This was replaced by the cumulative sum aspect of the method due to the complexities necessary finding the edge solutions in this method. 
-
 
 \end{document}
