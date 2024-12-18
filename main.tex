@@ -101,9 +101,9 @@ Each run has a defined purpose and we choose a run with data we declare suitable
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{13144unscaled2.png}
-    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144. The distribution demonstrates there is a much greater density of exposures in the sub 30,000 ADU region, yielding a distribution with counts more than two orders of magnitude greater than later regions of the ADC. A second notable feature, is the oscillatory peak-like behavior throughout the range of the ADC. This is due to the exposures themselves having a bell curve distribution of ADU and is the result of adding many such exposures together. The upper region zooms in on bin to bin behavior, showing that bin to bin there are small deviations of counts present as well as some patterned downticks every 128 counts, as discussed further in Section \ref{sec:results}.}
-    \label{fig:unscaled13144}
+    \includegraphics[width=0.5\linewidth]{13144Combined.png}
+    \caption{The plots above demonstrate the readout of from all pixels among a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144. On the left side, is the distribution from the run itself. The distribution demonstrates there is a much greater density of exposures in the sub 30,000 ADU region, yielding a distribution with counts more than two orders of magnitude greater than later regions of the ADC. A second notable feature, is the oscillatory peak-like behavior throughout the range of the ADC. This is due to the exposures themselves having a bell curve distribution of ADU and is the result of adding many such exposures together. The upper region zooms in on bin to bin behavior, showing that bin to bin there are small deviations of counts present as well as some patterned downticks every 128 counts, as discussed further in Section \ref{sec:results}. On the right above is a rolling average scale of the left distribution for the same amplifier, R22S00C01. The scaling process is outlined in section \ref{sec:PDFEdges}. One can see the preservation of the bin to bin deviations even after scaling. Overlayed in red is the output from a Savitzky-Golay filter with window size 33, and order 3. The deviations between the filter and the histogram directly demonstrates persistence of differential nonlinearity in the ADC still present despite the rescaling.}
+    \label{fig:13144Distributions}
 \end{figure}
 
 The first of these runs is 13144, which is over 600 exposures of flat pairs with exposures covering bias to saturation of the CCDs. 
@@ -126,13 +126,6 @@ One such distribution is shown for our reference amplifier as figure \ref{fig:13
     \includegraphics[width=0.5\linewidth]{13549Filter2.png}
     \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 234 ramp exposures taken in electro-optical testing run 13549. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. Over the range of the ADC, the signal in all bins remains relatively consistent. In the upper right portion of the plot is a zoomed in section of the ADC demonstrating the oscillatory nature of the distribution as well as the deviations between the filter and the distribution, a sign of the DNL present in the ADC.}
     \label{fig:13549Hist}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{filterr13144.png}
-    \caption{Above is the pre-scaled combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 687 flat pair exposures taken in electro-optical testing run 13144, the unscaled version is Figure \ref{fig:unscaled13144}. The pre-scaling process is outlined in section \ref{sec:PDFEdges}. Oscillations can be seen throughout the histogram, which are the result of the exposures used to create this combined distribution. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. The deviations between the filter and the histogram directly demonstrates persistence of differential nonlinearity in the ADC still present despite the rescaling.}
-    \label{fig:13144Filter}
 \end{figure}
 
 After selecting two suitable runs to develop a calibration for, we must consider how to model an ideal ADC for the given range. 
@@ -437,15 +430,8 @@ Furthermore, there is some dependence on this first bin, but the deviation on av
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{calibrationADU.png}
-    \caption{The above plot demonstrates the dependence of the difference between calibrations as a function of ADU for R22S00C01. The left plot demonstrates the left edge difference as a function of ADU, and the right plot demonstrates the width difference as a function of ADU.}
-    \label{fig:diffADU}
-\end{figure}
-
-\begin{figure}
-    \centering
     \includegraphics[width=0.5\linewidth]{leftedgemeanadu2.png}
-    \caption{This plot demonstrates the starting bin dependence on the left edge difference between the two calibrating runs 13549 and 13144. The top row demonstrates the differences in left edge and width respectively by ADU for the first 1000 ADU of the calibrated ADC. The bottom row demonstrates the left edge and width difference by ADU over the full range of the calibrated ADC. }
+    \caption{The left column of these plots demonstrate the difference of the left edge of the bin placement between the two calibrations. The top demonstrates the first 1000 bins, while the bottom demonstrates this behavior over the full range of the calibration. We note the spread of this difference below [-0.3, 0.1], and appears to have no discernible pattern. On the right is the width difference by ADU. On the top, we see some pattern emerges out of the first 1000 bins, similar to the difference seen in figure \ref{fig:substructureplot}. We note this difference remains between [-0.2, 0.2] over the range of this calibration.}
     \label{fig:Leftstarting}
 \end{figure}
 
@@ -675,30 +661,6 @@ Extensive work was also done in order to choose the filter used in the cumulativ
 We examined multiple window sizes, between 25 and 100, and different orders of the filter, 2nd and 3rd for the Savitzky-Golay filter. 
 We also utilized another type of filter, Butterworth with high-pass, lowpass, and bandpass. 
 We utilized Chi-Squared tests in order to determine which filter best represented the input data and distributions, using both the real data used in this paper, but also fabricated datasets as well. 
-The results demonstrated that the Savitzky-Golay filter with window size 33 and order 3, represented the data used in the analysis and the fabricated data very well, and was therefore chosen for use in the method. 
-
-\subsection{RANDOM}
-Lastly there were various other attempts of calibration methods that were tried. 
-Some of these include terminating the dataset and doing a DNL mean correction in the original method in section \ref{sec:Adrianmethod}. 
-These methods both failed due to the other issues discussed throughout this work. 
-Before creating the pre-scale method, we also tried adding a correction to the filtered output in order to more closely match the distribution. 
-This proved to not fix the INL or the DNL problem, and diminished much of the filter's predictive power of acting as a true ADC distribution.
-The last method we tried involved PDF as used in the cumulative cum binning method, but it did not utilize the cumulative sum. 
-Rather it fit a spline to each of the filtered datapoints, which mathematically would require to deconvolve the PDF in order to recover the edges. 
-This was replaced by the cumulative sum aspect of the method due to the complexities necessary finding the edge solutions in this method. 
-
-Work as also done to look for a possible binary correlation between the starting bin and INL and found none was present. 
-We also examined the relative values of the filter and the distribution itself for the starting bin, as well as their change, and found no correlation between the two. 
-This effect was entirely removed for run 13549, and minimized for later starting bin, where the distribution was evenly represented, suggesting the INL issue was a result from the skewed original distribution. 
-
-\subsection{padding the spline}
-The first of which involves the implementation of the spline of the cumulative sum as described in Section \ref{sec:PDFEdges}. 
-The spline utilized in this method is a cubic function. 
-Due to this, it has the potential to interpolate and yield negative values.
-This was observed to occurred for low ADU values. 
-We note that negative values from the spline are nonphysical solutions, as a region of the ADC can only yield 0 or a positive number of counts. 
-In order to protect the spline from this, we use padding, or adding more bins with 0 counts before where our ADC first has recorded signal in bins. 
-This inherently protects the spline from yielding negative values, as the function is forced through 0. 
-This also does not change the calibrating dataset in any substantial ways, as having no data or specifying a bin's occupancy is 0 are equivalent.
+The results demonstrated that the Savitzky-Golay filter with window size 33 and order 3, represented the data used in the analysis and the fabricated data very well, and was therefore chosen for use in the method.  
 
 \end{document}
