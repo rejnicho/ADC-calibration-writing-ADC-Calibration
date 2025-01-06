@@ -5,7 +5,7 @@
 
 \title{Calibration of Analog to Digital Converters with Considerations from DNL and INL}
 \author{Renee Nichols, Adrian Shestakov, Duncan Wood, Steve Ritz, ++ }
-\date{December 2024}
+\date{January 2025}
 
 \begin{document}
 \maketitle 
@@ -36,8 +36,8 @@ We then wrap up the discussion with a demonstrative example of how to use the re
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{idealADC.pdf}
-    \caption{Above is a schematic demonstrating how the analog to digital converter ideally works (blue), and its true behavior (orange). Along the y axis is the ADU value recorded by the ADC, which has integer values. Along the x axis is the edge of the ADC, or the left and right edges of the bin which maps to a given ADU. As tracked along the blue curve, an ideal ADC has bins with integer edges which map to corresponding ADU. Typically the incident input is some amplified voltage, where the gain of such amplification is known. The orange curve shows a simulated true ADC, which has left and right edges that deviate from the ideal, but still maps to a single ADU. The difference in the left and right edges leads to the presence of a differential nonlinearity, a difference between an ideal bin width and a true bin width, and also an integral nonlinearity, a difference between an ideal middle of a bin, and a true middle of a bin.}
+    \includegraphics[width=0.5\linewidth]{ADCModel.png}
+    \caption{Above is a schematic demonstrating how the analog to digital converter ideally works (red), and its true behavior (black). Along the y axis is the ADU value recorded by the ADC, which has integer values. Along the x axis is the edge of the ADC, or the left and right edges of the bin which maps to a given ADU. As tracked along the blue curve, an ideal ADC has bins with integer edges which map to corresponding ADU. Typically the incident input is some amplified voltage, where the gain of such amplification is known. The orange curve shows a simulated true ADC, which has left and right edges that deviate from the ideal, but still maps to a single ADU. The difference in the left and right edges leads to the presence of a differential nonlinearity, a difference between an ideal bin width and a true bin width, and also an integral nonlinearity, a difference between an ideal middle of a bin, and a true middle of a bin.}
     \label{fig:idealADC}
 \end{figure}
 
@@ -102,7 +102,7 @@ Each run has a defined purpose and we choose a run with data we declare suitable
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{13144Combined.png}
+    \includegraphics[width=1\textwidth]{13144Combined.png}
     \caption{The plots above demonstrate the readout of from all pixels among a single amplifier, R22S00C01, along all 687 flat pair exposures taken in run electro-optical testing run 13144. On the left side, is the distribution from the run itself. The distribution demonstrates there is a much greater density of exposures in the sub 30,000 ADU region, yielding a distribution with counts more than two orders of magnitude greater than later regions of the ADC. A second notable feature, is the oscillatory peak-like behavior throughout the range of the ADC. This is due to the exposures themselves having a bell curve distribution of ADU and is the result of adding many such exposures together. The upper region zooms in on bin to bin behavior, showing that bin to bin there are small deviations of counts present as well as some patterned downticks every 128 counts, as discussed further in Section \ref{sec:results}. On the right above is a rolling average scale of the left distribution for the same amplifier, R22S00C01. The scaling process is outlined in section \ref{sec:PDFEdges}. One can see the preservation of the bin to bin deviations even after scaling. Overlayed in red is the output from a Savitzky-Golay filter with window size 33, and order 3. The deviations between the filter and the histogram directly demonstrates persistence of differential nonlinearity in the ADC still present despite the rescaling.}
     \label{fig:13144Distributions}
 \end{figure}
@@ -124,8 +124,8 @@ One such distribution is shown for our reference amplifier as figure \ref{fig:13
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{13549Filter2.png}
-    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 234 ramp exposures taken in electro-optical testing run 13549. Overlayed in orange is the output from a Savitzky-Golay filter with window size 33, and order 3. Over the range of the ADC, the signal in all bins remains relatively consistent. In the upper right portion of the plot is a zoomed in section of the ADC demonstrating the oscillatory nature of the distribution as well as the deviations between the filter and the distribution, a sign of the DNL present in the ADC.}
+    \includegraphics[width=0.5\linewidth]{13549Filter3.png}
+    \caption{Above is the combined distribution of the readout from all pixels on a single amplifier, R22S00C01, along all 234 ramp exposures taken in electro-optical testing run 13549. Overlayed in red is the output from a Savitzky-Golay filter with window size 33, and order 3. Over the range of the ADC, the signal in all bins remains relatively consistent. In the upper right portion of the plot is a zoomed in section of the ADC demonstrating the oscillatory nature of the distribution as well as the deviations between the filter and the distribution, a sign of the DNL present in the ADC.}
     \label{fig:13549Hist}
 \end{figure}
 
@@ -346,18 +346,18 @@ This fingerprint of the source histogram suggests the real behavior of the ADC i
 
 
 We also note the spread of the binwidths themselves match between calibrating run. 
-This is further shown in figure \ref{fig:DiffWL}, where we examine bin by bin the difference in the binwidths calculated from the two calibrating runs. 
+This is further shown as the bottom row of figure \ref{fig:substructureplot}, where we examine bin by bin the difference in the binwidths calculated from the two calibrating runs. 
 The histogram of these differences shown demonstrates a mean width difference by run of 0, with a spread of maximum $\pm$ 0.2. 
 Inherently this suggests there is some dependence on the width determination as a function of the source histogram, but on average the methods are not deviating by a systematic amount. 
 Another notable aspect of figure \ref{fig:substructureplot}, is the differences in binwidth distribution based on the calibrating run. 
 As seen here, there are some differences between the left and right plots, demonstrating some minute differences due to the calibrating run.  
-The differences here are noted especailly by the different clumping of binwidths for widths above 1, while there is good agreement for binwidths below 1. 
+The differences here are noted especially by the different clumping of binwidths for widths above 1, while there is good agreement for binwidths below 1. 
 We will explore in section \ref{sec:Left Differences} the specific edge location differences of the in greater detail.  
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{substructure2.png}
-    \caption{The above figure demonstrates the calibrated bin widths of the the amplifier R22S00C01, near the lowest ADU region. At this zoom level, the substructure of the ADC can be seen clearly. On the left is the result from the ramp run 13549, and on the left is the result from the pre-scaled run 13144.  Some slight deviations can be seen between the two runs, due to their individual distributions, but both demonstrate regions of macroscopic grouping of DNL and yield similar bin for bin values of the DNL, as explained in section \ref{sec:results}.}
+    \includegraphics[width=0.75\linewidth]{substructure4.png}
+    \caption{The above figure demonstrates the calibrated bin widths of the the amplifier R22S00C01, near the lowest ADU region. At this zoom level, the substructure of the ADC can be seen clearly as the top row. On the left is the result from the ramp run 13549, and on the left is the result from the pre-scaled run 13144.  Some slight deviations can be seen between the two runs, due to their individual distributions, but both demonstrate regions of macroscopic grouping of DNL and yield similar bin for bin values of the DNL, as explained in section \ref{sec:results}. The bottom row hints at this, demonstrating the range of the binwidths over the calibrated ADC is consistent for both runs.}
     \label{fig:substructureplot}
 \end{figure}
 
@@ -383,8 +383,8 @@ This result is robust and not dependent on the calibrating run, suggesting these
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{inldnl2.png}
-    \caption{The above plot demonstrates the DNL and INL for each bin of the calibrated ADC for the two calibrating runs.}
+    \includegraphics[width=0.75\linewidth]{inldnl3.png}
+    \caption{The top row of the above plot demonstrates the DNL calculated for each bin of the ADC using the scaled flat pairs (left) and ramp run (right) for an example amplifier. The DNL is strictly between [-0.4, 0.4] for all bins of the ADC when binning commences at the same starting bin, with the mean DNL in both cases being 0. The bottom row demonstrates the INL calculated for each bin of the ADC for the two runs as above. The results demonstrate the INL is between [-0.4, 0.4] for all bins of the ADC when binning commences at the same starting bin, with the mean INL in both cases being less than 0.15.}
     \label{fig:calibratedDNLINL}
 \end{figure}
 
@@ -397,18 +397,18 @@ This can be accomplished by examining the location of one of the edges for each 
 By convention, we select using the location of the left edge. 
 This choice is motivated by the method itself selecting the first left edge location to be placed in the same location for both calibrations. 
 To examine this, we first begin by taking the difference in the location of the left edge of each bin over the range of the ADC. 
-The result of such a method can be shown in figure \ref{fig:DiffWL}, where the left edges differ on average by less than -0.1 ADU per bin. 
+The result of such a method can be shown in figure \ref{fig:leftwidthADU}, where the left edges differ on average by less than -0.1 ADU per bin. 
 Strictly speaking this means on average the bins from the ramp run calibration, 13549 are on average slightly larger than that of the bins from the rescaled flat pairs 13144. 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{calibrationdifferences.png}
-    \caption{The plots above demonstrate the distribution of width differences and left edge differences as computed for two calibrating runs of R22S00C01. On the left side, the distribution of width difference has a spread of [-0.2, 0.2], with its mean centered about zero. On the right side, the distribution of left edge differences which was a spread of [-0.2, 0.2], with a mean centered at -0.07.}
-    \label{fig:DiffWL}
+    \includegraphics[width=1\linewidth]{widthleftdifferences.png}
+    \caption{The plots above demonstrate the distribution of width differences and left edge differences as computed for two calibrating runs of R22S00C01. The top row is the left difference of the bin edges 13144-13549. The histogram shows the distribution of this difference, a normal distribution with a mean of nearly 0, with the deviation of such will be examined in figure \ref{fig:Leftstarting}. The middle demonstrates these left differences as a function of ADU bin, and the right plot is a small subsection to demonstrate the spread has no discernible pattern in the left differences. The bottom row demonstrates the same plots: histogram, all ADU, and subregion, but with width difference between the two runs instead. We note the histogram is normally distributed about 0 and is consistent over the calibrated range of the ADC.}
+    \label{fig:leftwidthADU}
 \end{figure}
 
 This is determined by running the calibration on both runs starting from earliest selected bin, then subtracting one set of left edges from the other, specifically the ramp run  determined edges from flat pair determined edges. 
-The distribution of left edge differences is shown in figure \ref{fig:DiffWL}. 
+The distribution of left edge differences is shown in figure \ref{fig:leftwidthADU}. 
 The plot demonstrates the left differences themselves, bin to bin, form a normal distribution centered around its mean -0.07. 
 Doing this same analysis, but instead subtracting the widths of each distribution by ADU code, we form a width difference distribution as well. 
 The width differences themselves have a mean of 0, and are also normally distributed.
@@ -435,17 +435,11 @@ The mean left differences sits between (-0.15, 0.15) over the range of 1000 succ
 This verifies that there is some dependence on the calibration based on where the first left edge is placed. 
 Furthermore, there is some dependence on this first bin, but the deviation on average is less than $|0.2|$ regardless of starting bin, suggesting the method does a sufficient job for both calibrations to align. 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{leftedgemeanadu2.png}
-    \caption{The left column of these plots demonstrate the difference of the left edge of the bin placement between the two calibrations. The top demonstrates the first 1000 bins, while the bottom demonstrates this behavior over the full range of the calibration. We note the spread of this difference below [-0.3, 0.1], and appears to have no discernible pattern. On the right is the width difference by ADU. On the top, we see some pattern emerges out of the first 1000 bins, similar to the difference seen in figure \ref{fig:substructureplot}. We note this difference remains between [-0.2, 0.2] over the range of this calibration.}
-    \label{fig:Leftstarting}
-\end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{leftedgemeanadu.png}
-    \caption{re-write this becuase you somehow deleted this. }
+    \includegraphics[width=0.5\linewidth]{meanleftbyADU.png}
+    \caption{Above is a plot demonstrating the effect of the placement of the first edge as described in section \ref{sec: Cummulative binning}. From figure \ref{fig:leftwidthADU} we see there is a non zero mean difference of the left edge over the range of the ADC. Here we demonstrate that this mean left difference is dependent on the starting ADU selected to commence binning. This explicitly demonstrates there is some dependence on the differences between calibration as a function of starting ADU, but the difference is within the range of [-0.15, 0.15] and demonstrates no discernable pattern over the range of ADU values. We note here we do not demonstrate the dependence of the width difference mean, as if is consistently 0 for all ADU starting values.}
     \label{fig:Leftstarting}
 \end{figure}
 
@@ -466,47 +460,40 @@ We note here that two amplifiers for 13144 did not have sufficient data, R03S11C
 R30S00C10 is also excluded from 13549 and is seen as a blank amplifier in figures \ref{fig:focalplaneDNL} and \ref{fig:focalplaneINL} due to the same terminated dataset issue.
 
 To further illustrate the strength of this calibration, we plot the mean width difference for every amplifier. 
-In this, we calculate the width difference for every bin between the two calibrations, and subtract their widths as shown in figures \ref{fig:DiffWL} and \ref{fig:Leftstarting}. 
-We then compute the mean for each amplifier, and plot all those means together as figure \ref{fig:focalplaneWidths}. 
+In this, we calculate the width difference for every bin between the two calibrations, and subtract their widths as shown in figures \ref{fig:leftwidthADU} and \ref{fig:Leftstarting}. 
+We then compute the mean for each amplifier, and plot all those means together as figure \ref{fig:focalplanehistograms}. 
 The results demonstrate the the widths differ per run on average 0. 
 Suggesting the width calibration is very robust from one calibration run to another. 
 This is the generalization of the results explained in seciton \ref{sec:Left Differences}. 
 
 
 We also examine how the left edges deviate from one run to the other over the entire focal plane.
-We first calculate the difference in the location of the left edges between the two calibrations as seen in figures \ref{fig:DiffWL} and \ref{fig:Leftstarting}. 
+We first calculate the difference in the location of the left edges between the two calibrations as seen in figures \ref{fig:leftwidthADU} and \ref{fig:Leftstarting}. 
 We then compute the mean of this left edge difference, and plot as a histogram for all the calibrated amplifiers. 
-The histogram seen in figure \ref{fig:focalplanelefts} demonstrates the left edge difference between the runs for all the amplifiers. 
+The histogram seen in figure \ref{fig:focalplanehistograms} demonstrates the left edge difference between the runs for all the amplifiers. 
 This result demonstrates that the average difference between runs is 0, with a range of [-0.4, 0.4]. 
 This furthers our conclusion from section \ref{sec:Left Differences} that suggests the exact location of the first left bin dictates how well the two calibrations match. 
 That is to say, there is less than a 0.5 difference between calibraiton runs depending on how well the first left edge is placed. 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{maxdnl13549.png}
+    \includegraphics[width=0.75\linewidth]{maxdnl13549.png}
     \caption{The above figure demonstrates the calibration of the ADC using the differential nonlinearity method we described in section \ref{sec: AD}. This method computes edges along the ADC for each 3024 amplifiers individually for the ramp run 13549. The DNL can then be computed for each bin, in each amplifier, and plotted here is the maximum magnitude DNL of all bins in each amplifier. Ranging in magnitude between 0 and 1, the maximally achieved DNL for each amplifier is below the maximally allowed by the specification sheet.}
     \label{fig:focalplaneDNL}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{maxinl13549.png}
+    \includegraphics[width=0.75\linewidth]{maxinl13549.png}
     \caption{The above figure demonstrates the calibration of the ADC using the differential nonlinearity method we described in section \ref{sec: AD}. This method computes edges along the ADC for each 3024 amplifiers individually. The INL can then be computed for each bin, in each amplifier, and plotted here is the maximum magnitude INL of all bins in each amplifier. Ranging between 0 and 2, the maximally achieved INL for each amplifier is below the maximally allowed by the specification sheet.}
     \label{fig:focalplaneINL}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{focalplanewidths2.png}
-    \caption{The above figure is a histogram of the mean width difference for each amplifier calibrated using the method described in section \ref{sec: Cummulative binning}. The mean reported here is representative of the mean shown in figure \ref{fig:DiffWL}, of the width difference between the two calibration runs by ADU. The above distribution is normally distributed with the mean difference of 0, with small deviations of the spread.}
-    \label{fig:focalplaneWidths}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{focalplaneleftdiff2.png}
-    \caption{The above figure is a histogram of the mean left difference for each amplifier calibrated using the method described in section \ref{sec: Cummulative binning}. The mean reported here is representative of the mean shown in figure \ref{fig:DiffWL}, of the left difference between the two calibration runs by ADU. The above distribution is normally distributed with the mean difference of 0, with small deviations of the spread between [-0.5, 0.5].}
-    \label{fig:focalplanelefts}
+    \includegraphics[width=1\linewidth]{meandifferencehist.png}
+    \caption{The above left plot is a histogram of the mean left difference for each amplifier calibrated using the method described in section \ref{sec: Cummulative binning}. The mean reported here is representative of the mean shown in figure \ref{fig:leftwidthADU}, of the left difference between the two calibration runs by ADU. The above distribution is normally distributed with the mean difference of 0, with small deviations of the spread between [-0.5, 0.5]. The above right is a histogram of the mean width difference for each amplifier calibrated using the method described in section \ref{sec: Cummulative binning}. The mean reported here is representative of the mean shown in figure \ref{fig:leftwidthADU}, of the width difference between the two calibration runs by ADU. The above distribution is normally distributed with the mean difference of 0, with small deviations of the spread.}
+    \label{fig:focalplanehistograms}
 \end{figure}
 
 We note, although it is not explicitly shown, that the issues of instability of the DNL and INL, as discussed in and the appendix are no longer present. 
@@ -613,7 +600,7 @@ Together these issues with INL and DNL indicate the need for a more robust treat
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{inldnl.pdf}
+    \includegraphics[width=1\linewidth]{OldINLDNL.png}
     \caption{Above on the left demonstrates the contributions to the differential nonlinearity using the method described in \ref{sec:Adrianmethod} for amplifier R22S00C01. For sub 30000 ADU, the DNL sharply peaks, suggesting reason for concern, while the DNL stabilizes for higher ADU. On the left is a plot of the unbounded integral nonlinearity that grows progressively throughout the range of the CCD first sharply for low ADU then more gradually for higher ADU.}
     \label{fig:originalDNLINL}
 \end{figure}
